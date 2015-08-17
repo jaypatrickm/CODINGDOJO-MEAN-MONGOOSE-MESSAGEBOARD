@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Message Board</title>
+	<!-- <link rel="stylesheet" href="/stylesheets/style.css" /> -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div id="nav-top" class="row">
+			<div class="col-sm-12">
+				<h1>THE DOJO MESSAGE BOARD</h1>
+				<% if (typeof(messageErr) != 'undefined') { %>
+					<h3><%= messageErr %></h3>
+				<% } %>
+				<% if (typeof(nameErr) != 'undefined') { %>
+					<h3><%= nameErr %></h3>
+				<% } %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<form id="post-message" action="/message" method="post">
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" name="name" class="form-control" placeholder="name">
+					</div>
+					<div class="form-group">
+						<label for="message">Message</label>
+						<textarea name="message" class="form-control" placeholder="enter message"></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary">Post Message</button>
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<ul id="messages">
+							<% if (typeof(posts) != 'undefined') { %>
+							<% for (var x in posts) { %>
+					<li class="posts">
+							<h3><%= posts[x].name%></h3>
+							<p><%= posts[x].message%></p>
+	
+							<% if (typeof(comments) != 'undefined') { %>
+							<% for (var y in comments) { %>
+								<% for (var z in posts[x].comments) { %>
+	
+								<% var com1 = comments[y]._id.toString() %>
+								<% if (com1 == posts[x].comments[z]) { %>
+							<h3><%= comments[y].name %></h3>
+							<p><%= comments[y].comment%></p>
+							<% }
+								}} %>
+
+								<%} %>
+
+							
+							<form id="comment-message" action="/comment/<%= posts[x]._id %>" method="post">
+								<div class="form-group">
+									<label for="name">Name</label>
+									<input type="text" name="name" class="form-control" placeholder="name">
+								</div>
+								<div class="form-group">
+									<label for="comment">comment</label>
+									<textarea name="comment" class="form-control" placeholder="enter comment"></textarea>
+								</div>
+								<button type="submit" class="btn btn-primary">Post Comment</button>
+							</form>
+
+					</li>
+							<% } }%>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
